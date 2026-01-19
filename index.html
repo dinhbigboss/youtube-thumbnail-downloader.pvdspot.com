@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Thumbnail Downloader - Professional Asset Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: { brand: '#FF0000' },
+                    letterSpacing: { 'ultra': '-0.04em' }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+        .glass-header { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); }
+        .dark .glass-header { background: rgba(8, 8, 8, 0.85); }
+        .hero-title { font-size: clamp(2rem, 6vw, 3.8rem); line-height: 1.1; max-width: 950px; margin: 0 auto; }
+        .step-number { -webkit-text-stroke: 1px rgba(255,0,0,0.3); color: transparent; }
+        details summary::-webkit-details-marker { display: none; }
+        
+        /* 🎨 Animations */
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .animate-cookie { animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+        .shake-error { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+    </style>
+</head>
+<body class="bg-[#fafafa] dark:bg-[#050505] text-slate-900 dark:text-slate-100 transition-colors duration-500">
+
+    <nav class="fixed top-0 w-full z-50 glass-header border-b border-slate-100 dark:border-white/5">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-brand rounded-lg flex items-center justify-center shadow-lg shadow-red-500/20">
+                    <i class="fas fa-play text-white text-[8px]"></i>
+                </div>
+                <span class="text-base font-extrabold tracking-ultra uppercase italic">YouTube <span class="text-brand">Downloader</span></span>
+            </div>
+            <button id="theme-toggle" class="p-2.5 rounded-xl bg-slate-100 dark:bg-white/5 transition-all">
+                <i id="theme-icon" class="fas fa-moon text-slate-600 dark:text-amber-400"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="pt-48 pb-24 px-6 max-w-6xl mx-auto">
+        <header class="text-center mb-16" data-aos="fade-down">
+            <h1 class="hero-title font-black mb-6 tracking-ultra uppercase italic">
+                YouTube <span class="text-brand">Thumbnail Downloader</span>
+            </h1>
+            <p class="text-slate-500 dark:text-slate-400 max-w-lg mx-auto font-medium text-base md:text-lg">
+                Extract original HD thumbnails in seconds.
+            </p>
+        </header>
+
+        <div class="max-w-4xl mx-auto mb-32">
+            <div id="input-container" class="bg-white dark:bg-[#0A0A0A] p-4 md:p-6 rounded-[2.5rem] shadow-2xl border border-slate-100 dark:border-white/5 transition-all duration-300" data-aos="fade-up">
+                <div class="flex flex-col md:flex-row gap-3">
+                    <input type="text" id="video-url" 
+                        class="flex-grow px-7 py-5 rounded-2xl border-2 border-slate-50 dark:border-white/5 bg-slate-50 dark:bg-black/30 focus:border-brand/40 outline-none transition-all text-base font-semibold"
+                        placeholder="Paste YouTube link here...">
+                    <button onclick="processVideo()" class="bg-brand hover:bg-red-700 text-white px-9 py-5 rounded-2xl font-black text-base transition-all active:scale-95 shadow-xl shadow-red-500/20">
+                        EXTRACT
+                    </button>
+                </div>
+                
+                <div id="error-msg" class="hidden h-0 overflow-hidden transition-all duration-300">
+                    <div class="mt-4 flex items-center justify-center gap-2 text-brand font-black text-[10px] uppercase tracking-widest bg-brand/5 py-3 rounded-xl border border-brand/10">
+                        <i class="fas fa-circle-exclamation animate-pulse"></i> 
+                        <span>Wait, that link doesn't look right</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="result-area" class="hidden mt-20 space-y-12 animate-fade-up">
+                <div class="flex flex-col items-center gap-10">
+                    <div class="w-full rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white dark:border-white/10 ring-1 ring-black/5">
+                        <img id="img-max" src="" class="w-full h-auto">
+                    </div>
+                    
+                    <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-6 bg-white dark:bg-white/5 rounded-[1.5rem] border border-slate-100 dark:border-white/10 flex flex-col gap-4">
+                            <h4 class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Master Quality</h4>
+                            <button onclick="downloadImg('max')" class="flex justify-between items-center p-4 bg-slate-900 dark:bg-white dark:text-black text-white rounded-xl font-black hover:bg-brand dark:hover:bg-brand dark:hover:text-white transition-all text-sm">
+                                <span>ULTRA HD (720P)</span> <i class="fas fa-crown text-amber-400"></i>
+                            </button>
+                            <button onclick="downloadImg('sd')" class="flex justify-between items-center p-4 bg-slate-100 dark:bg-white/10 rounded-xl font-bold text-sm">
+                                <span>STANDARD HD</span> <i class="fas fa-download opacity-30"></i>
+                            </button>
+                        </div>
+                        <div class="p-6 bg-white dark:bg-white/5 rounded-[1.5rem] border border-slate-100 dark:border-white/10 flex flex-col gap-4">
+                            <h4 class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Standard Sizes</h4>
+                            <button onclick="downloadImg('hq')" class="flex justify-between items-center p-4 bg-slate-50 dark:bg-white/5 rounded-xl font-bold text-sm">
+                                <span>HQ (480P)</span> <i class="fas fa-image opacity-30"></i>
+                            </button>
+                            <button onclick="downloadImg('mq')" class="flex justify-between items-center p-4 bg-slate-50 dark:bg-white/5 rounded-xl font-bold text-sm">
+                                <span>MQ (360P)</span> <i class="fas fa-image opacity-30"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="py-24 border-t border-slate-100 dark:border-white/5" data-aos="fade-up">
+            <h2 class="text-2xl font-black text-center uppercase italic mb-16 tracking-tighter">Simple Workflow</h2>
+            <div class="grid md:grid-cols-3 gap-12">
+                <div class="text-center group">
+                    <div class="text-6xl font-black step-number mb-4 group-hover:text-brand transition-all">01</div>
+                    <h3 class="font-black text-base uppercase italic mb-2">Copy</h3>
+                    <p class="text-slate-500 text-xs">Copy the YouTube URL.</p>
+                </div>
+                <div class="text-center group">
+                    <div class="text-6xl font-black step-number mb-4 group-hover:text-brand transition-all">02</div>
+                    <h3 class="font-black text-base uppercase italic mb-2">Paste</h3>
+                    <p class="text-slate-500 text-xs">Paste into the tool.</p>
+                </div>
+                <div class="text-center group">
+                    <div class="text-6xl font-black step-number mb-4 group-hover:text-brand transition-all">03</div>
+                    <h3 class="font-black text-base uppercase italic mb-2">Save</h3>
+                    <p class="text-slate-500 text-xs">Download your asset.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="py-24 max-w-3xl mx-auto" data-aos="fade-up">
+            <h2 class="text-2xl font-black text-center uppercase italic mb-12 tracking-tighter">Common Questions</h2>
+            <div class="space-y-4">
+                <details class="group bg-white dark:bg-white/5 rounded-2xl border border-slate-100 dark:border-white/10 overflow-hidden">
+                    <summary class="flex justify-between items-center p-6 cursor-pointer font-bold list-none text-sm">
+                        Is it completely free? <i class="fas fa-plus text-[10px] group-open:rotate-45 transition-transform"></i>
+                    </summary>
+                    <div class="px-6 pb-6 text-slate-500 text-xs leading-relaxed">Yes, we offer unlimited high-quality downloads without any hidden fees.</div>
+                </details>
+                <details class="group bg-white dark:bg-white/5 rounded-2xl border border-slate-100 dark:border-white/10 overflow-hidden">
+                    <summary class="flex justify-between items-center p-6 cursor-pointer font-bold list-none text-sm">
+                        What about copyright? <i class="fas fa-plus text-[10px] group-open:rotate-45 transition-transform"></i>
+                    </summary>
+                    <div class="px-6 pb-6 text-slate-500 text-xs leading-relaxed">Thumbnails are the property of creators. Please use them for personal or fair-use projects.</div>
+                </details>
+            </div>
+        </section>
+    </main>
+
+    <div id="cookie-notice" class="fixed bottom-6 right-6 left-6 md:left-auto md:max-w-sm z-[100] hidden">
+        <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl p-6 rounded-[2rem] shadow-2xl border border-slate-200 dark:border-white/10 animate-cookie">
+            <div class="flex gap-4 items-center mb-6">
+                <div class="w-10 h-10 bg-brand/10 text-brand rounded-full flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-cookie-bite"></i>
+                </div>
+                <p class="text-slate-600 dark:text-slate-300 text-[11px] font-bold leading-relaxed">
+                    We use cookies to improve your experience on our tool.
+                </p>
+            </div>
+            <button onclick="acceptCookies()" class="w-full py-4 bg-brand text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-red-500/20 active:scale-95 transition-all">
+                Accept All
+            </button>
+        </div>
+    </div>
+
+    <footer class="bg-white dark:bg-[#080808] pt-20 pb-10 border-t border-slate-100 dark:border-white/5">
+        <div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-10 mb-16">
+            <div class="col-span-2">
+                <div class="flex items-center gap-2 mb-6">
+                    <div class="w-7 h-7 bg-brand rounded-lg flex items-center justify-center"><i class="fas fa-play text-white text-[8px]"></i></div>
+                    <span class="text-base font-black uppercase italic tracking-ultra">YouTube <span class="text-brand">Downloader</span></span>
+                </div>
+                <p class="text-slate-500 text-[11px] font-medium leading-relaxed max-w-xs">Professional tool for instant high-quality thumbnail extraction.</p>
+            </div>
+            <div>
+                <h5 class="font-black text-[9px] uppercase tracking-widest mb-6 text-slate-400">Legal</h5>
+                <ul class="space-y-3 text-[11px] font-bold">
+                    <li><a href="#" class="hover:text-brand transition-colors">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-brand transition-colors">Terms of Use</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="font-black text-[9px] uppercase tracking-widest mb-6 text-slate-400">About</h5>
+                <ul class="space-y-3 text-[11px] font-bold">
+                    <li><a href="#" class="hover:text-brand transition-colors">About Us</a></li>
+                    <li><a href="#" class="hover:text-brand transition-colors">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-center opacity-20 text-[8px] font-black uppercase tracking-[0.5em]">
+            © 2026 YouTube Thumbnail Downloader
+        </div>
+    </footer>
+
+    <script>
+        AOS.init({ duration: 800, once: true });
+        let currentLinks = {};
+
+        function processVideo() {
+            const input = document.getElementById('video-url');
+            const container = document.getElementById('input-container');
+            const errorMsg = document.getElementById('error-msg');
+            const videoId = extractVideoId(input.value.trim());
+
+            if (!videoId) {
+                // Trigger Error UI
+                container.classList.add('shake-error', 'border-brand/30');
+                errorMsg.classList.remove('hidden');
+                errorMsg.style.height = 'auto';
+                
+                setTimeout(() => {
+                    container.classList.remove('shake-error');
+                }, 400);
+                return;
+            }
+
+            // Success State
+            container.classList.remove('border-brand/30');
+            errorMsg.style.height = '0';
+            setTimeout(() => errorMsg.classList.add('hidden'), 300);
+
+            const resultArea = document.getElementById('result-area');
+            resultArea.classList.remove('hidden');
+            currentLinks = {
+                'max': `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+                'sd': `https://img.youtube.com/vi/${videoId}/sddefault.jpg`,
+                'hq': `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+                'mq': `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`
+            };
+            document.getElementById('img-max').src = currentLinks['max'];
+            setTimeout(() => resultArea.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+        }
+
+        async function downloadImg(quality) {
+            const url = currentLinks[quality];
+            try {
+                const response = await fetch(url);
+                const blob = await response.blob();
+                const a = document.createElement('a');
+                a.href = window.URL.createObjectURL(blob);
+                a.download = `yt-thumb-${quality}.jpg`;
+                a.click();
+            } catch(e) { window.open(url, '_blank'); }
+        }
+
+        function extractVideoId(url) {
+            const reg = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+            const match = url.match(reg);
+            return (match && match[1]) ? match[1] : null;
+        }
+
+        function acceptCookies() {
+            document.getElementById('cookie-notice').classList.add('hidden');
+            localStorage.setItem('cookiesAccepted', 'true');
+        }
+
+        window.onload = () => {
+            if (!localStorage.getItem('cookiesAccepted')) {
+                setTimeout(() => document.getElementById('cookie-notice').classList.remove('hidden'), 1500);
+            }
+        }
+
+        const setDark = (isDark) => {
+            document.documentElement.classList.toggle('dark', isDark);
+            document.getElementById('theme-icon').className = isDark ? 'fas fa-sun text-amber-400' : 'fas fa-moon text-slate-600';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+        document.getElementById('theme-toggle').onclick = () => setDark(!document.documentElement.classList.contains('dark'));
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) setDark(true);
+    </script>
+</body>
+</html>
