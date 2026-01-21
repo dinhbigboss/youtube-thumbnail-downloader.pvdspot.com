@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Page Not Found | YouTube Downloader</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <title>Page Not Found</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -21,23 +26,46 @@
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
-        .glass-header { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); }
-        .dark .glass-header { background: rgba(8, 8, 8, 0.85); }
-        
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .animate-cookie { animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glass-header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+        }
+
+        .dark .glass-header {
+            background: rgba(8, 8, 8, 0.85);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .animate-cookie {
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
     </style>
 </head>
+
 <body class="bg-[#fafafa] dark:bg-[#050505] text-slate-900 dark:text-slate-100 transition-colors duration-500">
 
     <nav class="fixed top-0 w-full z-50 glass-header border-b border-slate-100 dark:border-white/5">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-brand rounded-lg flex items-center justify-center shadow-lg shadow-red-500/20">
-                    <i class="fas fa-play text-white text-[8px]"></i>
-                </div>
-                <span class="text-base font-extrabold tracking-ultra uppercase italic">YouTube <span class="text-brand">Downloader</span></span>
+                <a href="/"><span class="text-base font-extrabold tracking-ultra uppercase italic">YouTube Thumbnail
+                        <span class="text-brand">Downloader</span></span></a>
             </div>
             <button id="theme-toggle" class="p-2.5 rounded-xl bg-slate-100 dark:bg-white/5 transition-all">
                 <i id="theme-icon" class="fas fa-moon text-slate-600 dark:text-amber-400"></i>
@@ -47,14 +75,18 @@
 
     <main class="pt-60 pb-32 px-6 flex flex-col items-center justify-center min-h-[70vh] text-center">
         <div data-aos="fade-up">
-            <h1 class="text-[120px] md:text-[180px] font-black leading-none tracking-tighter text-slate-200 dark:text-white/5 italic">404</h1>
+            <h1
+                class="text-[120px] md:text-[180px] font-black leading-none tracking-tighter text-slate-200 dark:text-white/5 italic">
+                404</h1>
             <div class="max-w-md mx-auto -mt-10 md:-mt-16">
-                <h2 class="text-2xl md:text-4xl font-black uppercase italic mb-6 tracking-ultra">Page Not Found</h2>
+                <h2 class="text-2xl md:text-4xl font-black uppercase italic mb-6 tracking-ultra">Page <span
+                        class="text-brand">Not Found</span></h2>
                 <p class="text-slate-500 dark:text-slate-400 font-medium text-sm md:text-base leading-relaxed mb-10">
-                    The content you're looking for has been moved or doesn't exist. 
+                    The content you're looking for has been moved or doesn't exist.
                     Let's get back to extracting high-quality thumbnails.
                 </p>
-                <a href="index.html" class="inline-block px-10 py-5 bg-brand text-white rounded-[2rem] font-black text-xs uppercase tracking-widest shadow-xl shadow-red-500/20 hover:scale-105 active:scale-95 transition-all">
+                <a href="/"
+                    class="inline-block px-10 py-5 bg-brand text-white rounded-[2rem] font-black text-xs uppercase tracking-widest shadow-xl shadow-red-500/20 hover:scale-105 active:scale-95 transition-all">
                     Back to Home
                 </a>
             </div>
@@ -65,42 +97,51 @@
         <div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-10 mb-16">
             <div class="col-span-2">
                 <div class="flex items-center gap-2 mb-6">
-                    <div class="w-7 h-7 bg-brand rounded-lg flex items-center justify-center"><i class="fas fa-play text-white text-[8px]"></i></div>
-                    <span class="text-base font-black uppercase italic tracking-ultra">YouTube <span class="text-brand">Downloader</span></span>
+                    <a href="/"><span class="text-base font-black uppercase italic tracking-ultra">YouTube Thumbnail
+                            <span class="text-brand">Downloader</span></span></a>
                 </div>
-                <p class="text-slate-500 text-[11px] font-medium leading-relaxed max-w-xs">Professional tool for instant high-quality thumbnail extraction.</p>
+                <p class="text-slate-500 text-[11px] font-medium leading-relaxed max-w-xs">Professional tool for instant
+                    high-quality thumbnail extraction.</p>
             </div>
             <div>
                 <h5 class="font-black text-[9px] uppercase tracking-widest mb-6 text-slate-400">Legal</h5>
                 <ul class="space-y-3 text-[11px] font-bold">
-                    <li><a href="#" class="hover:text-brand transition-colors">Privacy Policy</a></li>
-                    <li><a href="#" class="hover:text-brand transition-colors">Terms of Use</a></li>
+                    <li><a href="https://pvdspot.com/privacy-policy.html" target="_blank"
+                            class="hover:text-brand transition-colors">Privacy Policy</a></li>
+                    <li><a href="https://pvdspot.com/terms-of-use.html" target="_blank"
+                            class="hover:text-brand transition-colors">Terms of Use</a></li>
                 </ul>
             </div>
             <div>
                 <h5 class="font-black text-[9px] uppercase tracking-widest mb-6 text-slate-400">About</h5>
                 <ul class="space-y-3 text-[11px] font-bold">
-                    <li><a href="#" class="hover:text-brand transition-colors">About Us</a></li>
-                    <li><a href="#" class="hover:text-brand transition-colors">Contact</a></li>
+                    <li><a href="https://pvdspot.com/about-us.html" target="_blank"
+                            class="hover:text-brand transition-colors">About Us</a></li>
                 </ul>
             </div>
         </div>
         <div class="text-center opacity-20 text-[8px] font-black uppercase tracking-[0.5em]">
-            © 2026 YouTube Thumbnail Downloader
+            ©
+            <script>document.write(new Date().getFullYear())</script> <a href="/"
+                class="hover:text-brand transition-colors">YouTube Thumbnail Downloader</a>
         </div>
     </footer>
 
     <div id="cookie-notice" class="fixed bottom-6 right-6 left-6 md:left-auto md:max-w-sm z-[100] hidden">
-        <div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl p-6 rounded-[2rem] shadow-2xl border border-slate-200 dark:border-white/10 animate-cookie">
+        <div
+            class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl p-6 rounded-[2rem] shadow-2xl border border-slate-200 dark:border-white/10 animate-cookie">
             <div class="flex gap-4 items-center mb-6">
-                <div class="w-10 h-10 bg-brand/10 text-brand rounded-full flex items-center justify-center flex-shrink-0">
+                <div
+                    class="w-10 h-10 bg-brand/10 text-brand rounded-full flex items-center justify-center flex-shrink-0">
                     <i class="fas fa-cookie-bite"></i>
                 </div>
-                <p class="text-slate-600 dark:text-slate-300 text-[11px] font-bold leading-relaxed">
-                    We use cookies to improve your experience on our tool.
+                <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">
+                    We use cookies to enhance your browsing experience and analyze our traffic. By clicking
+                    <strong>Accept All</strong>, you consent to our use of cookies.
                 </p>
             </div>
-            <button onclick="acceptCookies()" class="w-full py-4 bg-brand text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-red-500/20 active:scale-95 transition-all">
+            <button onclick="acceptCookies()"
+                class="w-full py-4 bg-brand text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-red-500/20 active:scale-95 transition-all">
                 Accept All
             </button>
         </div>
@@ -109,7 +150,6 @@
     <script>
         AOS.init({ duration: 800, once: true });
 
-        // Cookie Logic
         function acceptCookies() {
             document.getElementById('cookie-notice').classList.add('hidden');
             localStorage.setItem('cookiesAccepted', 'true');
@@ -121,7 +161,6 @@
             }
         }
 
-        // Theme Toggle Logic
         const setDark = (isDark) => {
             document.documentElement.classList.toggle('dark', isDark);
             document.getElementById('theme-icon').className = isDark ? 'fas fa-sun text-amber-400' : 'fas fa-moon text-slate-600';
@@ -131,4 +170,5 @@
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) setDark(true);
     </script>
 </body>
+
 </html>
