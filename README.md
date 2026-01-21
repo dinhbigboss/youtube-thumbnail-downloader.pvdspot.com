@@ -1,3 +1,3 @@
 # Youtube Thumbnail Downloader
 
-Visit site: [https://youtube-thumbnail-downloader.pvdspot.com](https://youtube-thumbnail-downloader.pvdspot.com)
+Visit site: [https://youtube-thumbnail-downloader.pvdspot.com/](https://youtube-thumbnail-downloader.pvdspot.com/)
