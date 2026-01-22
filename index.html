@@ -347,7 +347,7 @@
                 const blob = await response.blob();
                 const a = document.createElement('a');
                 a.href = window.URL.createObjectURL(blob);
-                a.download = `yt-thumb-${quality}-${Date.now()}.jpg`;
+                a.download = `youtube-thumbnail-${quality}-${Date.now()}.jpg`;
                 a.click();
             } catch (e) { window.open(url, '_blank'); }
         }
